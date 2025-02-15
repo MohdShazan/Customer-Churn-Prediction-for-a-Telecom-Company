@@ -3,10 +3,10 @@ import pandas as pd
 import numpy as np
 import pickle
 
-# Load the trained model
+
 model = pickle.load(open("logistic_model.pkl", "rb"))
 
-# Custom CSS for Dark-Themed UI
+
 st.markdown("""
     <style>
         /* Streamlit default dark theme background */
@@ -67,14 +67,13 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Center the main container
+
 st.markdown('<div class="main-container">', unsafe_allow_html=True)
 
-# App Title
+
 st.title("📡 Telecom Customer Churn Prediction")
 st.write("### Enter customer details below to predict churn ⬇️")
 
-# User Input Form (Ensuring Exact 20 Features Match the Model)
 def user_input():
     gender = st.radio("Gender", ["Male", "Female"], horizontal=True)
     SeniorCitizen = st.radio("Senior Citizen", [0, 1], horizontal=True)
@@ -97,14 +96,14 @@ def user_input():
     TotalCharges = tenure * MonthlyCharges  # Derived feature
     AvgMonthlySpend = TotalCharges / tenure if tenure > 0 else 0  # Avoid division by zero
 
-    # Convert categorical values
+    
     gender = 1 if gender == "Male" else 0
     Partner = 1 if Partner == "Yes" else 0
     Dependents = 1 if Dependents == "Yes" else 0
     PhoneService = 1 if PhoneService == "Yes" else 0
     PaperlessBilling = 1 if PaperlessBilling == "Yes" else 0
 
-    # Creating DataFrame to Match Model's 20 Features
+    
     data = {
         "gender": [gender],
         "SeniorCitizen": [SeniorCitizen],
@@ -130,14 +129,14 @@ def user_input():
 
     return pd.DataFrame(data)
 
-# Get user input
+
 input_df = user_input()
 
-# Predict churn when button is clicked
+
 if st.button("🔍 Predict Churn"):
     prediction = model.predict(input_df)[0]
     
-    # Define result styling
+    
     if prediction == 1:
         result_text = "⚠️ Likely to Churn"
         color = "red"
@@ -145,7 +144,7 @@ if st.button("🔍 Predict Churn"):
         result_text = "✅ Not Likely to Churn"
         color = "#1db954"
     
-    # Display Result with Styling
+    
     st.markdown(f"""
         <div class="result-box" style="background-color: {color}; color: white;">
             {result_text}
